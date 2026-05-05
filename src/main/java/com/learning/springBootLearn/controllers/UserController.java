@@ -15,9 +15,6 @@ import java.util.List;
 @RequestMapping("/users")
 @RestController()
 public class UserController {
-    @Value("${test.url}")
-    private String test;
-
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -31,11 +28,6 @@ public class UserController {
         User currentUser = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok(currentUser);
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return test;
     }
 
     @GetMapping("/")
