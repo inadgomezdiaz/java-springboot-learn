@@ -13,6 +13,10 @@ public class LoginResponseDto {
         this.token = token;
     }
 
+    public long getExpiresIn() {
+        return expiresIn;
+    }
+
     public void setExpiresIn(long expiresIn) {
         this.expiresIn = expiresIn;
     }

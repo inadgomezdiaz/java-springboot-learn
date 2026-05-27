@@ -1,5 +1,6 @@
 package com.learning.springBootLearn.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,7 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-@Table(name="user")
+@Table(name="users")
 @Entity
 public class User implements UserDetails {
 
@@ -27,6 +28,7 @@ public class User implements UserDetails {
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
