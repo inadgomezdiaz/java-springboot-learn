@@ -9,7 +9,6 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -17,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest                  // levanta el contexto completo
 @AutoConfigureMockMvc            // configura MockMvc sin servidor real
-@ActiveProfiles("test")          // usa application-test.properties (H2, etc.)
+@ActiveProfiles("test")          // usa application-test.properties (H2)
 class AuthenticationE2ESpec {
 
     @Autowired
@@ -36,31 +35,27 @@ class AuthenticationE2ESpec {
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("jane@example.com"))
-                .andExpect(jsonPath("$.password").doesNotExist()); // nunca exponer la password
+                .andExpect(jsonPath("$.password").doesNotExist());
     }
 
     @Test
     void signup_withDuplicateEmail_returns409() throws Exception {
         RegisterUserDto dto = new RegisterUserDto("duplicate@example.com", "secret123","Jane Doe");
 
-        // primer registro
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
 
-        // segundo registro con el mismo email → debe fallar
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isConflict()); // ajustá según tu manejo de errores
+                .andExpect(status().isConflict());
     }
 
-    // ─── /login ─────────────────────────────────────────────────
 
     @Test
     void login_withValidCredentials_returnsTokenAndExpiry() throws Exception {
-        // 1. registrar primero
         RegisterUserDto registerDto = new RegisterUserDto("john@example.com","secret123","John Doe");
 
         mockMvc.perform(post("/auth/signup")
@@ -68,7 +63,6 @@ class AuthenticationE2ESpec {
                         .content(objectMapper.writeValueAsString(registerDto)))
                 .andExpect(status().isOk());
 
-        // 2. login
         LoginUserDto loginDto = new LoginUserDto();
         loginDto.setEmail("john@example.com");
         loginDto.setPassword("secret123");
