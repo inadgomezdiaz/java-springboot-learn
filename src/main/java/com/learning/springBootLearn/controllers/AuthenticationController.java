@@ -6,6 +6,7 @@ import com.learning.springBootLearn.dto.RegisterUserDto;
 import com.learning.springBootLearn.entities.User;
 import com.learning.springBootLearn.services.AuthenticationService;
 import com.learning.springBootLearn.services.JwtService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) throws BadRequestException {
         User registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);

@@ -1,6 +1,7 @@
 package com.learning.springBootLearn.exceptions;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import org.apache.coyote.BadRequestException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -49,6 +50,11 @@ public class GlobalExceptionHandler {
         }
 
         if (exception instanceof DataIntegrityViolationException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(409), exception.getMessage());
+            errorDetail.setProperty("description", "Email already exists");
+        }
+
+        if (exception instanceof BadRequestException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(409), exception.getMessage());
             errorDetail.setProperty("description", "Email already exists");
         }
