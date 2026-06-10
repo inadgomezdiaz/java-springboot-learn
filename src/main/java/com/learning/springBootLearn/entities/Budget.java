@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Table(name="Budget")
@@ -15,10 +16,14 @@ public class Budget{
     private int id;
 
     @Column(nullable = false)
-    private String limitAmount;
+    private BigDecimal limitAmount;
 
     @Column(nullable = false)
     private String month;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -27,6 +32,11 @@ public class Budget{
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    public User getUser() {
+        return user;
+    }
+
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
@@ -40,7 +50,7 @@ public class Budget{
         this.month = month;
     }
 
-    public void setLimitAmount(String limitAmount) {
+    public void setLimitAmount(BigDecimal limitAmount) {
         this.limitAmount = limitAmount;
     }
 
@@ -48,7 +58,7 @@ public class Budget{
         return id;
     }
 
-    public String getLimitAmount() {
+    public BigDecimal getLimitAmount() {
         return limitAmount;
     }
 
