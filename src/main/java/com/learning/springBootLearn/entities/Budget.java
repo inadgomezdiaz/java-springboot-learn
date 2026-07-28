@@ -1,5 +1,6 @@
 package com.learning.springBootLearn.entities;
 
+import com.learning.springBootLearn.enums.Month;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,7 +20,7 @@ public class Budget{
     private BigDecimal limitAmount;
 
     @Column(nullable = false)
-    private String month;
+    private Month month;
 
     @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
@@ -32,6 +33,13 @@ public class Budget{
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    public Budget(BigDecimal limitAmount, Month month, User user) {
+        this.limitAmount = limitAmount;
+        this.month = month;
+        this.user = user;
+
+    }
 
     public User getUser() {
         return user;
@@ -46,7 +54,7 @@ public class Budget{
         this.createdAt = createdAt;
     }
 
-    public void setMonth(String month) {
+    public void setMonth(Month month) {
         this.month = month;
     }
 
@@ -62,7 +70,7 @@ public class Budget{
         return limitAmount;
     }
 
-    public String getMonth() {
+    public Month getMonth() {
         return month;
     }
 

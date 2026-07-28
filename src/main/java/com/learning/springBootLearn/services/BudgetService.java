@@ -1,6 +1,9 @@
 package com.learning.springBootLearn.services;
 
+import com.learning.springBootLearn.Mappers.BudgetMapper;
+import com.learning.springBootLearn.dto.CreateBudgetDto;
 import com.learning.springBootLearn.entities.Budget;
+import com.learning.springBootLearn.entities.User;
 import com.learning.springBootLearn.repositories.BudgetRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +15,12 @@ public class BudgetService {
 
     private final BudgetRepository budgetRepository ;
 
-    public BudgetService(BudgetRepository budgetRepository) {
+    public BudgetService(BudgetRepository budgetRepository, UserService userService) {
         this.budgetRepository = budgetRepository;
     }
-    public void createBudget(Budget budget){
-        budgetRepository.save(budget);
+    public Budget createBudget(CreateBudgetDto budget, User user ){
+        Budget budgetEntity = BudgetMapper.fromDtoToEntity(budget, user);
+        return budgetRepository.save(budgetEntity);
     }
     public List<Budget> findAllBudgetsByUserId(int userId){
         return budgetRepository.findBudgetsByUserId(userId);
