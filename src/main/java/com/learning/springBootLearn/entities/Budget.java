@@ -8,7 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Table(name="Budget")
+@Table(name = "budgets")
 @Entity
 public class Budget{
     @Id
@@ -33,6 +33,9 @@ public class Budget{
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    public Budget() {
+    }
 
     public Budget(BigDecimal limitAmount, Month month, User user) {
         this.limitAmount = limitAmount;
