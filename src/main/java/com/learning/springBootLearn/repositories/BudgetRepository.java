@@ -7,9 +7,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BudgetRepository extends CrudRepository<Budget, Integer> {
     @Query("SELECT b FROM Budget b WHERE b.user.id = :userId")
     List<Budget> findBudgetsByUserId(@Param("userId") int userId);
+
+    Optional<Budget> findByIdAndUserId(int id, int userId);
 }
