@@ -8,8 +8,8 @@ public class BudgetMapper {
 
     public static Budget fromDtoToEntity(CreateBudgetDto createBudgetDto, User user) {
         return new Budget(
-            createBudgetDto.limitAmount(),
-            createBudgetDto.month(),
+            createBudgetDto.getLimitAmount(),
+            createBudgetDto.getMonth(),
             user
         );
     }
