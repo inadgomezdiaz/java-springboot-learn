@@ -174,7 +174,6 @@ class BudgetE2ESpec {
                         .header("Authorization", "Bearer " + otherToken))
                 .andExpect(status().isNotFound());
     }
-
     private String registerAndGetToken(String email) throws Exception {
         register(email);
         return tokenFor(email);
@@ -215,4 +214,5 @@ class BudgetE2ESpec {
         JsonNode json = objectMapper.readTree(response);
         return json.get("id").asInt();
     }
+
 }
